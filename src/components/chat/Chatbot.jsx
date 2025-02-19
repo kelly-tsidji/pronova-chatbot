@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { Box, Input, Button, VStack, HStack, Text } from "@chakra-ui/react";
+import { Box, Input, Button, VStack, HStack, Text, IconButton, useClipboard } from "@chakra-ui/react";
+import { MdContentCopy } from "react-icons/md";
 
 const Chatbot = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
+
+    // Move useClipboard to the top level
+    const { onCopy, setValue } = useClipboard("");
 
     const handleSend = () => {
         if (input.trim()) {
@@ -23,7 +27,7 @@ const Chatbot = () => {
         <Box
             display="flex"
             flexDirection="column"
-            justifyContent="center" // Always starts centered
+            justifyContent="center"
             alignItems="center"
             height="100vh"
             padding="10px"
@@ -36,27 +40,40 @@ const Chatbot = () => {
                 padding="10px"
                 display="flex"
                 flexDirection="column"
-                height={messages.length > 0 ? "100vh" : "auto"} // Expands when messages appear
+                height={messages.length > 0 ? "100vh" : "auto"}
             >
-                {/* Message Display (Hidden initially) */}
+                {/* Message Display */}
                 {messages.length > 0 && (
                     <Box 
-                        flex="1" // Pushes input box down
+                        flex="1"
                         overflowY="auto"
                         padding="10px"
-                        // border="1px solid #e2e8f0"
                         borderRadius="md"
                     >
                         {messages.map((msg, idx) => (
                             <HStack key={idx} justify={msg.sender === "user" ? "flex-end" : "flex-start"}>
-                                <Box
+                                <VStack
                                     bg={msg.sender === "user" ? "blue.500" : "gray.300"}
                                     color={msg.sender === "user" ? "white" : "black"}
                                     padding="8px"
                                     borderRadius="md"
+                                    position="relative"
                                 >
                                     <Text>{msg.text}</Text>
-                                </Box>
+
+                                    {/* Clipboard Button for Bot Responses */}
+                                    {msg.sender === "bot" && (
+                                        <IconButton
+                                            aria-label="Copy to clipboard"
+                                            icon={<MdContentCopy />}
+                                            size="xs"
+                                            onClick={() => {
+                                                setValue(msg.text); // Set clipboard text
+                                                onCopy(); // Copy to clipboard
+                                            }}
+                                        />
+                                    )}
+                                </VStack>
                             </HStack>
                         ))}
                     </Box>
