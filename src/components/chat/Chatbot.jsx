@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Box, Input, Button, VStack, HStack, Text, IconButton, useClipboard } from "@chakra-ui/react";
+import { 
+    Box, Input, Button, VStack, HStack, Text, IconButton, useClipboard, Tooltip, Heading 
+} from "@chakra-ui/react";
 import { MdContentCopy } from "react-icons/md";
 
 const Chatbot = () => {
@@ -80,21 +82,37 @@ const Chatbot = () => {
                 )}
 
                 {/* Input and Send Button */}
-                <HStack marginTop={messages.length > 0 ? "auto" : "0"}>
-                    <Input
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type a message..."
-                        size="md"
-                        borderRadius="md"
-                    />
-                    <Button onClick={handleSend} colorScheme="blue">
-                        Send
-                    </Button>
-                </HStack>
+                <VStack>
+                    <Heading>Hello!</Heading>
+                    <HStack 
+                        width="100%" 
+                        marginTop={messages.length > 0 ? "auto" : "0"}
+                    >
+                        <Input
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Type a message..."
+                            size="md"
+                            borderRadius="md"
+                        />
+                        <Button onClick={handleSend} colorScheme="blue">
+                            Send
+                        </Button>
+                    </HStack>
+                </VStack>
+            
             </Box>
         </Box>
     );
 };
 
 export default Chatbot;
+
+
+
+
+
+
+
+
+
